@@ -2,7 +2,7 @@
 
 namespace Core\Model\Entity;
 
-interface ClientesInterface {
+interface TasksInterface {
 
 	/**
      * Get task_id
@@ -78,6 +78,21 @@ interface ClientesInterface {
      * @return TasksInterface
      */
     public function setLastUpdate($last_update);
+
+    /**
+     * Get completed_date
+     *
+     * @return Int
+     */
+    public function getCompletedDate();
+
+     /**
+     * Set completed_date
+     *
+     * @param Int $completed_date
+     * @return TasksInterface
+     */
+    public function setCompletedDate($completed_date);
 
     /**
      * Get tag

@@ -2,7 +2,7 @@
 
 namespace Core\Model\Entity;
 
-class Tasks implements ClientesInterface {
+class Tasks implements TasksInterface {
 
 	/**
      * @var Int
@@ -30,6 +30,11 @@ class Tasks implements ClientesInterface {
     protected $last_update;
 
     /**
+     * @var Int
+     */
+    protected $complete_date;
+
+    /**
      * @var String
      */
     protected $tag;
@@ -38,6 +43,10 @@ class Tasks implements ClientesInterface {
      * @var Int
      */
     protected $status;
+
+    public function __construct(){
+        $this->creation_date = strtotime(date('Y-m-d H:i:s'));
+    }
 
     /**
      * Get task_id
@@ -125,7 +134,7 @@ class Tasks implements ClientesInterface {
      * @return Int
      */
     public function getLastUpdate(){
-    	return $this->last_update;
+        return $this->last_update;
     }
 
     /**
@@ -135,7 +144,27 @@ class Tasks implements ClientesInterface {
      * @return TasksInterface
      */
     public function setLastUpdate($last_update){
-    	$this->last_update = (int) $last_update;
+        $this->last_update = (int) $last_update;
+        return $this;
+    }
+
+    /**
+     * Get complete_date
+     *
+     * @return Int
+     */
+    public function getCompletedDate(){
+    	return $this->complete_date;
+    }
+
+    /**
+     * Set complete_date
+     *
+     * @param Int $complete_date
+     * @return TasksInterface
+     */
+    public function setCompletedDate($complete_date){
+    	$this->complete_date = (int) $complete_date;
     	return $this;
     }
 

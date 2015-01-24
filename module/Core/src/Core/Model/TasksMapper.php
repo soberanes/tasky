@@ -11,21 +11,34 @@ namespace Core\Model;
 use ZfcBase\Mapper\AbstractDbMapper;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 use Zend\Db\Sql\Expression as Expresion;
+use Core\Model\Entity\Tasks as TaskcEntity;
 
+class TasksMapper extends AbstractDbMapper{
 
-class TasksMapper extends AbstractDbMapper {
 	protected $tableName = 'tasks';
 
-	/**
-	 * Insert into database
-	 *
-	 * @param Entity/Tasks $entity
-	 * @param String $tableName
-	 * @param HydratorInterface $hydrator
-	 * @return Entity
-	 */
-	public function insert($entity, $tableName = null, HydratorInterface $hydrator = null) {
+    public function saveTasks(){
+        $cpUsuario = new TaskcEntity();
+        $cpUsuario->setTitle('Paul')
+                ->setDescription('Heeeeello')
+                ->setCreationDate(strtotime(date('d-m-Y')))
+                ->setLastUpdate(strtotime(date('d-m-Y')))
+                ->setCompletedDate(0)
+                ->setTag('hello')
+                ->setStatus(1);
+
+        return $this->addTask($cpUsuario);
+    }
+
+    public function fetchAll($limit = null){
+        $select = $this->getSelect();
+        $entity = $this->select($select);
         
+        return $entity;
+    }
+
+	public function addTask($entity, $tableName = null, HydratorInterface $hydrator = null) {
+
         $entityExists1 = $this->findByTaskId($entity->getTaskId());
         $entityExists2 = $this->exists($entity->getTitle(), $entity->getDescription());
         if (!$entityExists1 && !$entityExists2) {
@@ -60,6 +73,5 @@ class TasksMapper extends AbstractDbMapper {
         $result = parent::update($entity, $where, $tableName, $hydrator);
         return $result;
     }
-
 
 }

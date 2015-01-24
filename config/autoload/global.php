@@ -40,7 +40,7 @@ return array(
             ),
             'db' => array(
                 'driver' => 'Pdo',
-                'dsn' => 'mysql:dbname=t4sky;host=localhost',
+                'dsn' => 'mysql:dbname=t4sky;hostname=localhost',
                 'username' => 'root',
                 'password' => 'root',
                 'driver_options' => array(

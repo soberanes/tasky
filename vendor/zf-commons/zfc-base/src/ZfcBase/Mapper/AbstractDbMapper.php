@@ -116,6 +116,7 @@ abstract class AbstractDbMapper extends EventProvider
             $entityPrototype ?: $this->getEntityPrototype());
 
         $resultSet->initialize($stmt->execute());
+        
         return $resultSet;
     }
 
