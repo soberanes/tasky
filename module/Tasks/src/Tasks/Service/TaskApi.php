@@ -3,6 +3,7 @@ namespace Tasks\Service;
 
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
+use Core\Model\Entity\Tasks as TaskEntity;
 
 class TaskApi implements ServiceManagerAwareInterface
 {
@@ -85,9 +86,41 @@ class TaskApi implements ServiceManagerAwareInterface
         return $task;
     }
 
-    public function addRandomTask(){
+    public function editTask($data){
         $mapper = $this->getMapper();
-        $task_generated = $mapper->saveTasks();
+
+        $task_entity = new TaskEntity();
+        $task_entity->setTaskId($data['task_id'])
+                    ->setTitle($data['title'])
+                    ->setDescription($data['description'])
+                    ->setLastUpdate(strtotime(date('d-m-Y')))
+                    ->setTag($data['tag']);
+
+        $mapper->updateTask($task_entity);
+    }
+
+    public function deleteTask($data){
+        $mapper = $this->getMapper();
+
+        $task_entity = new TaskEntity();
+        $task_entity->setTaskId($data['task_id']);
+
+        $mapper->deleteTask($task_entity);
+    }
+
+    public function addRandomTask(){
+
+        $task_entity = new TaskEntity();
+        $task_entity->setTitle('Paul')
+                ->setDescription('Heeeeello')
+                ->setCreationDate(strtotime(date('d-m-Y')))
+                ->setLastUpdate(strtotime(date('d-m-Y')))
+                ->setCompletedDate(0)
+                ->setTag('hello')
+                ->setStatus(1);
+
+        $mapper = $this->getMapper();
+        $task_generated = $mapper->addTask($task_entity);
         return $task_generated;
     }
 

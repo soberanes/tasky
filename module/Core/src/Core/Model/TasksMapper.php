@@ -11,24 +11,11 @@ namespace Core\Model;
 use ZfcBase\Mapper\AbstractDbMapper;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 use Zend\Db\Sql\Expression as Expresion;
-use Core\Model\Entity\Tasks as TaskcEntity;
+use Core\Model\Entity\Tasks as TaskEntity;
 
 class TasksMapper extends AbstractDbMapper{
 
 	protected $tableName = 'tasks';
-
-    public function saveTasks(){
-        $cpUsuario = new TaskcEntity();
-        $cpUsuario->setTitle('Paul')
-                ->setDescription('Heeeeello')
-                ->setCreationDate(strtotime(date('d-m-Y')))
-                ->setLastUpdate(strtotime(date('d-m-Y')))
-                ->setCompletedDate(0)
-                ->setTag('hello')
-                ->setStatus(1);
-
-        return $this->addTask($cpUsuario);
-    }
 
     public function fetchAll($limit = null){
         $select = $this->getSelect();
@@ -72,6 +59,11 @@ class TasksMapper extends AbstractDbMapper{
         $where = array('task_id' => $entity->getTaskId());
         $result = parent::update($entity, $where, $tableName, $hydrator);
         return $result;
+    }
+
+    public function deleteTask($entity, $tableName = null){
+        $where = array('task_id' => $entity->getTaskId());
+        return $result = parent::delete($where, $tableName);
     }
 
 }
