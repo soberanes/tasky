@@ -24,17 +24,12 @@ class TasksController extends AbstractActionController{
 	}
 
 	public function getAction(){
-		$request = $this->getRequest();
-		if(!$request->isPost()){
-			return new JsonModel(array(
-				"response_code" => 203,
-		    	"message" 	 => "NO_DATA_RECEIVED",
-		    	"success" 	 => false
-	        ));
-		}
+		date_default_timezone_set('America/Mexico_City');
 
-		$data = $request->getPost();
-		if(!$data['task_id']){
+		$request = $this->getRequest();
+		$id = (int) $this->params()->fromRoute('id', 0);
+
+		if(!$id){
 			return new JsonModel(array(
 				"response_code" => 201,
 		    	"message" 	 => "NO_ID_RECEIVED",
@@ -45,8 +40,10 @@ class TasksController extends AbstractActionController{
 		$tasks_api = $this->getServiceLocator()->get('tasks_api');
 
 		try{
-			$task = $tasks_api->getTaskById($data['task_id']);
+			$task = $tasks_api->getTaskById($id);
 			if($task){
+				$status_txt = ($task->getStatus() == 1) ? "completada" : "pendiente";
+				
 				$response = new JsonModel(array(
 			    	"response_code" => 100,
 			    	"message" 	 	=> "TASK_DATA",
@@ -54,11 +51,11 @@ class TasksController extends AbstractActionController{
 			    		"task_id" 		=> $task->getTaskId(),
 		                "title" 		=> $task->getTitle(),
 		                "description" 	=> $task->getDescription(),
-		                "cretion_date" 	=> $task->getCreationDate(),
-		                "last_update" 	=> $task->getLastUpdate(),
+		                "creation_date" => date("d/m/Y g:i a", $task->getCreationDate()),
+		                "last_update" 	=> date("d/m/Y g:i a",$task->getLastUpdate()),
 		                "complete_date" => $task->getCompletedDate(),
 		                "tag" 			=> $task->getTag(),
-		                "status" 		=> $task->getStatus()
+		                "status" 		=> $status_txt
 			    	),
 			    	"success" 		=> true
 		        ));

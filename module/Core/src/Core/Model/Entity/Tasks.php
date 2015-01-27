@@ -184,7 +184,7 @@ class Tasks implements TasksInterface {
      * @return TasksInterface
      */
     public function setTag($tag){
-    	$this->tag = (int) $tag;
+    	$this->tag = (string) $tag;
     	return $this;
     }
 
